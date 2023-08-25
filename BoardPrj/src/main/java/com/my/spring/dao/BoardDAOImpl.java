@@ -28,4 +28,16 @@ public class BoardDAOImpl implements BoardDAO {
 		sqlsession.insert(namespace + ".write", boardDTO);
 	}
 
+	// 게시물 상세 조회
+	@Override
+	public BoardDTO viewDetail(int bno) {
+		return sqlsession.selectOne(namespace + ".viewDetail", bno);
+	}
+
+	// 조회수
+	@Override
+	public void views(int bno) {
+		sqlsession.update(namespace + ".views", bno);
+	}
+
 }

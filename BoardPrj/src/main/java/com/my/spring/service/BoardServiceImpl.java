@@ -27,4 +27,18 @@ public class BoardServiceImpl implements BoardService {
 		
 		boardDAO.write(boardDTO);
 	}
+
+	// 게시물 상세 조회
+	@Override
+	public BoardDTO viewDetail(int bno) {
+		
+		return boardDAO.viewDetail(bno);
+	}
+
+	// 조회수
+	@Override
+	public void views(int bno) {
+		
+		boardDAO.views(bno);
+	}
 }

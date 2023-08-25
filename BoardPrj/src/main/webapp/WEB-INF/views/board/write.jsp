@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>게시물 작성</title>
 </head>
 <body>
 	<form action="/board/write" method="post">

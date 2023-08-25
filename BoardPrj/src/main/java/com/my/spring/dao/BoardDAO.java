@@ -11,4 +11,10 @@ public interface BoardDAO {
 	
 	// 게시물 작성
 	void write(BoardDTO boardDTO);
+	
+	// 게시물 상세조회
+	BoardDTO viewDetail(int bno);
+	
+	// 조회수
+	void views(int bno);
 }

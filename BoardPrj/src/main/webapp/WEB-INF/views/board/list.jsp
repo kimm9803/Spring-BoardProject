@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>게시물 목록</title>
 </head>
 <body>
 	<table>
@@ -25,7 +25,7 @@
 			<c:forEach items="${list}" var="list">
 				<tr>
 					<td>${list.bno}</td>
-					<td>${list.title}</td>
+					<td><a href="/board/view/${list.bno}">${list.title}</a></td>
 					<td><fmt:formatDate value="${list.regDate}"
 							pattern="yyyy-MM-dd" /></td>
 					<td>${list.writer}</td>
