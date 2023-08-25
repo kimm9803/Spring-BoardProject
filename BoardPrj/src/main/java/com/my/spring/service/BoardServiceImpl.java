@@ -20,4 +20,11 @@ public class BoardServiceImpl implements BoardService {
 		
 		return boardDAO.list();
 	}
+
+	// 게시물 작성
+	@Override
+	public void write(BoardDTO boardDTO) {
+		
+		boardDAO.write(boardDTO);
+	}
 }

@@ -14,12 +14,18 @@ public class BoardDAOImpl implements BoardDAO {
 	@Autowired
 	SqlSession sqlsession;
 	
-	private final String namespace = "com.my.spring.mappers.board";
+	private final String namespace = "com.my.spring.mappers.boardMapper";
 	
 	// 게시물 전체 목록
 	@Override
 	public List<BoardDTO> list() {
 		return sqlsession.selectList(namespace + ".list");
+	}
+
+	// 게시물 작성
+	@Override
+	public void write(BoardDTO boardDTO) {
+		sqlsession.insert(namespace + ".write", boardDTO);
 	}
 
 }

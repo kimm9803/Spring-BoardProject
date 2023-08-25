@@ -27,4 +27,17 @@ public class BoardController {
 		return "board/list";
 	}
 
+	// 게시물 작성 페이지 이동
+	@RequestMapping(value = "/write", method = RequestMethod.GET)
+	public String showWrite() {
+		return "board/write";
+	}
+	
+	// 게시물 목록으로 redirect
+	@RequestMapping(value = "/write", method = RequestMethod.POST)
+	public String getWrite(BoardDTO boardDTO) {
+		boardService.write(boardDTO);
+		
+		return "redirect:/board/list";
+	}
 }
