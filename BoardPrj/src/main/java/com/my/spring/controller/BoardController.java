@@ -48,7 +48,6 @@ public class BoardController {
 		// 게시글 상세 조회할 때마다 조회수 증가
 		boardService.views(bno);
 		BoardDTO findDTO = boardService.viewDetail(bno);
-		findDTO.setBno(bno);
 		model.addAttribute("boardDTO", findDTO);
 		return "/board/view";
 	}
@@ -64,8 +63,9 @@ public class BoardController {
 	
 	// 수정 데이터 반환
 	@RequestMapping(value = "/modify/{bno}", method = RequestMethod.POST)
-	public String viewModify(BoardDTO boardDTO) {
-		boardService.viewModify(boardDTO.getBno());
+	public String viewModify(@PathVariable int bno, BoardDTO boardDTO) {
+		boardService.viewModify(boardDTO);
+		
 		return "redirect:/board/list";
 	}
 }

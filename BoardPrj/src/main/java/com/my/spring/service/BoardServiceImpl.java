@@ -40,7 +40,7 @@ public class BoardServiceImpl implements BoardService {
 
 	// 게시물 수정
 	@Override
-	public void viewModify(int bno) {
-		boardDAO.viewModify(bno);
+	public void viewModify(BoardDTO boardDTO) {
+		boardDAO.viewModify(boardDTO);
 	}
 }

@@ -20,7 +20,7 @@
 	
 	<!-- 게시물 상세 조회 -->
 	<select id="viewDetail" parameterType="int" resultType="com.my.spring.dto.BoardDTO">
-		SELECT title, content, writer, regDate, viewCnt
+		SELECT bno, title, content, writer, regDate, viewCnt
 		FROM tbl_board
 		WHERE bno = #{bno}
 	</select>
@@ -33,7 +33,7 @@
 	</update>
 	
 	<!-- 게시물 수정 -->
-	<update id="viewModify" parameterType="int">
+	<update id="viewModify" parameterType="com.my.spring.dto.BoardDTO">
 		UPDATE tbl_board
 		SET title = #{title}, content = #{content}
 		WHERE bno = #{bno}

@@ -18,5 +18,5 @@ public interface BoardService {
 	void views(int bno);
 	
 	// 게시물 수정
-	void viewModify(int bno);
+	void viewModify(BoardDTO boardDTO);
 }
