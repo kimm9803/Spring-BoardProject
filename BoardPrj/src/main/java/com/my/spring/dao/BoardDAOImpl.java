@@ -45,4 +45,11 @@ public class BoardDAOImpl implements BoardDAO {
 	public void viewModify(BoardDTO boardDTO) {
 		sqlsession.update(namespace + ".viewModify", boardDTO);
 	}
+
+	// 게시물 삭제
+	@Override
+	public void viewDelete(int bno) {
+		sqlsession.delete(namespace + ".viewDelete", bno);
+		
+	}
 }

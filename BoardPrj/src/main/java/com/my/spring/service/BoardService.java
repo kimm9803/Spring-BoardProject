@@ -19,4 +19,7 @@ public interface BoardService {
 	
 	// 게시물 수정
 	void viewModify(BoardDTO boardDTO);
+	
+	// 게시물 삭제
+	void viewDelete(int bno);
 }

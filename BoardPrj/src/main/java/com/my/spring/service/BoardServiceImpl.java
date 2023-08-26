@@ -43,4 +43,10 @@ public class BoardServiceImpl implements BoardService {
 	public void viewModify(BoardDTO boardDTO) {
 		boardDAO.viewModify(boardDTO);
 	}
+
+	// 게시물 삭제
+	@Override
+	public void viewDelete(int bno) {
+		boardDAO.viewDelete(bno);
+	}
 }

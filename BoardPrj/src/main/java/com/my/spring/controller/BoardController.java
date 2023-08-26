@@ -68,4 +68,11 @@ public class BoardController {
 		
 		return "redirect:/board/list";
 	}
+	
+	@RequestMapping(value = "/delete/{bno}", method = RequestMethod.GET)
+	public String viewDelete(@PathVariable int bno) {
+		boardService.viewDelete(bno);
+		
+		return "redirect:/board/list";
+	}
 }

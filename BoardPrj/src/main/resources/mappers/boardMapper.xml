@@ -38,4 +38,10 @@
 		SET title = #{title}, content = #{content}
 		WHERE bno = #{bno}
 	</update>
+	
+	<!-- 게시물 삭제 -->
+	<delete id="viewDelete" parameterType="int">
+		DELETE FROM tbl_board
+		WHERE bno = #{bno}
+	</delete>
 </mapper>
