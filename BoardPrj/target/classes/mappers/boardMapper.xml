@@ -31,4 +31,6 @@
 		SET viewCnt = NVL(viewCnt, 0) + 1
 		WHERE bno = #{bno}
 	</update>
+	
+	
 </mapper>

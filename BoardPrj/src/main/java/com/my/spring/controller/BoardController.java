@@ -42,13 +42,30 @@ public class BoardController {
 		return "redirect:/board/list";
 	}
 	
+	// 게시물 상세 조회
 	@RequestMapping(value = "/view/{bno}", method = RequestMethod.GET)
 	public String showView(@PathVariable int bno, Model model) {
-		BoardDTO findDTO = boardService.viewDetail(bno);
 		// 게시글 상세 조회할 때마다 조회수 증가
 		boardService.views(bno);
+		BoardDTO findDTO = boardService.viewDetail(bno);
+		findDTO.setBno(bno);
+		model.addAttribute("boardDTO", findDTO);
+		return "/board/view";
+	}
+	
+	// 수정 페이지로 이동
+	@RequestMapping(value = "/modify/{bno}", method = RequestMethod.GET)
+	public String showViewModify(@PathVariable int bno, Model model) {
+		BoardDTO findDTO = boardService.viewDetail(bno);
 		model.addAttribute("boardDTO", findDTO);
 		
-		return "/board/view";
+		return "board/modify";
+	}
+	
+	// 수정 데이터 반환
+	@RequestMapping(value = "/modify/{bno}", method = RequestMethod.POST)
+	public String viewModify(BoardDTO boardDTO) {
+		boardService.viewModify(boardDTO.getBno());
+		return "redirect:/board/list";
 	}
 }

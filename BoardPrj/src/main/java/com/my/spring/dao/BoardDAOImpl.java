@@ -40,4 +40,9 @@ public class BoardDAOImpl implements BoardDAO {
 		sqlsession.update(namespace + ".views", bno);
 	}
 
+	// 게시물 수정
+	@Override
+	public void viewModify(int bno) {
+		sqlsession.update(namespace + ".viewModify", bno);
+	}
 }

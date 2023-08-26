@@ -35,7 +35,7 @@
 		</tbody>
 	</table>
 	<p>
-		<a href="/">홈</a>
+		<a href="/">홈</a> &nbsp;&nbsp;&nbsp; <a href="/board/write">게시글 작성</a>
 	</p>
 </body>
 </html>

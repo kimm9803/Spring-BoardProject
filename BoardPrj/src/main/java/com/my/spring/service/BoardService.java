@@ -16,4 +16,7 @@ public interface BoardService {
 	
 	// 조회수
 	void views(int bno);
+	
+	// 게시물 수정
+	void viewModify(int bno);
 }

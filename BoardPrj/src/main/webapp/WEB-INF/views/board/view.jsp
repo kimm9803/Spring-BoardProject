@@ -8,6 +8,7 @@
 <title>게시물 상세 조회</title>
 </head>
 <body>
+
 	글쓴이 &nbsp;
 	${boardDTO.writer}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
 	조회수 &nbsp;
@@ -21,7 +22,8 @@
 	${boardDTO.content} <br />
 	
 	<p>
-		<a href="/board/list">게시물 목록</a>
+		<a href="/board/list">게시물 목록</a> &nbsp;&nbsp;&nbsp; <a href="/board/modify/${boardDTO.bno}">수정</a>
+		&nbsp;&nbsp;&nbsp; <a href="/board/delete/${boardDTO.bno}">삭제</a>
 	</p>
 		
 </body>
