@@ -32,5 +32,10 @@
 		WHERE bno = #{bno}
 	</update>
 	
-	
+	<!-- 게시물 수정 -->
+	<update id="viewModify" parameterType="int">
+		UPDATE tbl_board
+		SET title = #{title}, content = #{content}
+		WHERE bno = #{bno}
+	</update>
 </mapper>
