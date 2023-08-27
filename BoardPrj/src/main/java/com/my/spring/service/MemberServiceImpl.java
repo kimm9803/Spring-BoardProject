@@ -1,5 +1,7 @@
 package com.my.spring.service;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +30,18 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public int nicknameCheck(String nickname) {
 		return memberDAO.nicknameCheck(nickname);
+	}
+
+	// 로그인
+	@Override
+	public MemberDTO login(String memberId, String password) {
+		return memberDAO.login(memberId, password);
+	}
+
+	// 로그아웃
+	@Override
+	public void logout(HttpSession session) {
+		session.invalidate();
 	}
 
 }

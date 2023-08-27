@@ -1,5 +1,8 @@
 package com.my.spring.dao;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -30,6 +33,16 @@ public class MemberDAOImpl implements MemberDAO {
 	@Override
 	public int nicknameCheck(String nickname) {
 		return sqlSession.selectOne(namespace + ".nicknameCheck", nickname);
+	}
+
+	// 로그인
+	@Override
+	public MemberDTO login(String memberId, String password) {
+		Map<String, String> map = new HashMap<>();
+		map.put("memberId", memberId);
+		map.put("password", password);
+		
+		return sqlSession.selectOne(namespace + ".login", map);
 	}
 	
 	

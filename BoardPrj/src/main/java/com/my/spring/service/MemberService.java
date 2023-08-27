@@ -1,5 +1,7 @@
 package com.my.spring.service;
 
+import javax.servlet.http.HttpSession;
+
 import com.my.spring.dto.MemberDTO;
 
 public interface MemberService {
@@ -12,4 +14,10 @@ public interface MemberService {
 	
 	// 닉네임 중복체크
 	int nicknameCheck(String nickname);
+	
+	// 로그인
+	MemberDTO login(String memberId, String password);
+	
+	// 로그아웃
+	void logout(HttpSession session);
 }

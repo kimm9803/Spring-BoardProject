@@ -3,20 +3,31 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.my.spring.mappers.memberMapper">
+
+	<!-- 회원가입 -->
 	<insert id="register" parameterType="com.my.spring.dto.MemberDTO">
 		INSERT INTO members (memberId, password, nickname, member_type)
 		VALUES (#{memberId}, #{password}, #{nickname}, #{memberType})
 	</insert>
 	
+	<!-- 아이디 중복검사 -->
 	<select id="idCheck" parameterType="String" resultType="int">
 		SELECT COUNT(memberId)
 		FROM members
 		WHERE memberId = #{memberId}
 	</select>
 	
+	<!-- 닉네임 중복검사 -->
 	<select id="nicknameCheck" parameterType="String" resultType="int">
 		SELECT COUNT(nickname)
 		FROM members
 		WHERE nickname = #{nickname}
+	</select>
+	
+	<!-- 로그인 -->
+	<select id="login" parameterType="HashMap" resultType="com.my.spring.dto.MemberDTO">
+		SELECT memberId, password, nickname, member_type, mileage
+		FROM members
+		WHERE memberId = #{memberId} AND password = #{password}
 	</select>
 </mapper>

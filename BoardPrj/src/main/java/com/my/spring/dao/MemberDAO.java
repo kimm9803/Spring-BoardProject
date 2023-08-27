@@ -11,4 +11,7 @@ public interface MemberDAO {
 	
 	// 닉네임 중복체크
 	int nicknameCheck(String nickname);
+	
+	// 로그인
+	MemberDTO login(String memberId, String password);
 }

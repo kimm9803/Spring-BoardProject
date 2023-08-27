@@ -11,6 +11,7 @@ public class MemberDTO {
 	 * 		nickname VARCHAR2(50) UNIQUE,
 	 * 		signup_date TIMESTAMP DEFAULT SYSTIMESTAMP NOT NULL,
 	 * 		member_type VARCHAR2(10)
+	 * 		mileage NUMBER DEFAULT 0 
 	 * );
 	 */
 	
@@ -20,7 +21,14 @@ public class MemberDTO {
 	private String nickname;
 	private Date signupDate;
 	private MemberType memberType;
+	private int mileage;
 	
+	public int getMileage() {
+		return mileage;
+	}
+	public void setMileage(int mileage) {
+		this.mileage = mileage;
+	}
 	public MemberType getMemberType() {
 		return memberType;
 	}
