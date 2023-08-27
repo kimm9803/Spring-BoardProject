@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.my.spring.mappers.memberMapper">
+	<insert id="register" parameterType="com.my.spring.dto.MemberDTO">
+		INSERT INTO members (memberId, password, nickname, member_type)
+		VALUES (#{memberId}, #{password}, #{nickname}, #{memberType})
+	</insert>
+	
+	<select id="idCheck" parameterType="String" resultType="int">
+		SELECT COUNT(memberId)
+		FROM members
+		WHERE memberId = #{memberId}
+	</select>
+	
+	<select id="nicknameCheck" parameterType="String" resultType="int">
+		SELECT COUNT(nickname)
+		FROM members
+		WHERE nickname = #{nickname}
+	</select>
+</mapper>
