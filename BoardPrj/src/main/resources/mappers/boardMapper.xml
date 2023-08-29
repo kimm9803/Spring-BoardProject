@@ -4,5 +4,15 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.my.spring.mappers.boardMapper">
 
+	<select id="boardList" resultType="com.my.spring.dto.BoardDTO">
+   		SELECT b.bid, b.title, b.content, b.post_date AS postDate,
+   		b.view_count AS viewCount, b.recommend_count AS recommendCount, b.author_id AS authodId, m.nickname
+    	FROM board b
+    	INNER JOIN members m ON b.author_id = m.mid
+	</select>
 	
+	<insert id="write" parameterType="HashMap">
+		INSERT INTO board (title, content, author_id)
+		VALUES (#{title}, #{content}, (SELECT mid FROM members WHERE nickname = #{nickname}))
+	</insert>
 </mapper>

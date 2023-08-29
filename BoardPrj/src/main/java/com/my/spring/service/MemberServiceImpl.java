@@ -1,5 +1,7 @@
 package com.my.spring.service;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,12 @@ public class MemberServiceImpl implements MemberService {
 	
 	@Autowired
 	MemberDAO memberDAO;
+	
+	// 회원목록
+	@Override
+	public List<MemberDTO> memberList() {
+		return memberDAO.memberList();
+	}
 	
 	// 회원가입
 	@Override
@@ -34,8 +42,8 @@ public class MemberServiceImpl implements MemberService {
 
 	// 로그인
 	@Override
-	public MemberDTO login(String memberId, String password) {
-		return memberDAO.login(memberId, password);
+	public MemberDTO login(String memberId, String password, String memberType) {
+		return memberDAO.login(memberId, password, memberType);
 	}
 
 	// 로그아웃
@@ -44,4 +52,21 @@ public class MemberServiceImpl implements MemberService {
 		session.invalidate();
 	}
 
+	// 회원탈퇴
+	@Override
+	public void withdrawl(String memberId) {
+		memberDAO.withdrawl(memberId);
+	}
+
+	// 회원검색
+	@Override
+	public MemberDTO searchMember(String memberId) {
+		return memberDAO.searchMember(memberId);
+	}
+
+	// 회원수정
+	@Override
+	public void updateMember(MemberDTO memberDTO) {
+		memberDAO.updateMember(memberDTO);
+	}
 }
