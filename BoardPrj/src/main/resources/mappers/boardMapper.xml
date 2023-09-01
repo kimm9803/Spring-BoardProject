@@ -4,15 +4,104 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.my.spring.mappers.boardMapper">
 
+	<!-- 게시판 리스트 -->
 	<select id="boardList" resultType="com.my.spring.dto.BoardDTO">
-   		SELECT b.bid, b.title, b.content, b.post_date AS postDate,
-   		b.view_count AS viewCount, b.recommend_count AS recommendCount, b.author_id AS authodId, m.nickname
-    	FROM board b
-    	INNER JOIN members m ON b.author_id = m.mid
+		SELECT b.bid, b.title, b.content, b.post_date AS postDate,
+		b.view_count AS viewCount, b.recommend_count AS recommendCount, b.author_id AS authodId, m.nickname
+		FROM board b
+		INNER JOIN members m ON b.author_id = m.mid
+		ORDER BY b.bid DESC
 	</select>
-	
+
+	<!-- 글 등록 -->
 	<insert id="write" parameterType="HashMap">
 		INSERT INTO board (title, content, author_id)
 		VALUES (#{title}, #{content}, (SELECT mid FROM members WHERE nickname = #{nickname}))
 	</insert>
+
+	<!-- 게시물 상세조회 -->
+	<select id="view" parameterType="int"
+		resultType="com.my.spring.dto.BoardDTO">
+		SELECT b.bid, b.title, b.content, b.post_date AS postDate, b.view_count AS viewCount,
+		b.recommend_count AS recommendCount, m.nickname, m.member_type AS memberType
+		FROM board b
+		INNER JOIN members m ON b.author_id = m.mid
+		WHERE b.bid = #{bid}
+	</select>
+
+	<!-- 조회수 -->
+	<update id="views" parameterType="int">
+		UPDATE board
+		SET view_count = view_count + 1
+		WHERE bid = #{bid}
+	</update>
+
+	<!-- 게시물 수정 -->
+	<update id="modify" parameterType="com.my.spring.dto.BoardDTO">
+		UPDATE board
+		SET title = #{title}, content = #{content}
+		WHERE bid = #{bid}
+	</update>
+
+	<!-- 게시물 삭제 -->
+	<delete id="delete" parameterType="int">
+		DELETE FROM board
+		WHERE bid = #{bid}
+	</delete>
+
+	<!-- 게시물 총 갯수(페이징) -->
+	<select id="totalCount" resultType="int">
+		SELECT COUNT(bid)
+		FROM board
+	</select>
+
+	<!-- 페이징(row limiting clause) + 검색 -->
+	<select id="listPage" parameterType="java.util.HashMap" resultType="com.my.spring.dto.BoardDTO">
+    SELECT
+        b.bid,
+        b.title,
+        b.content,
+        b.post_date AS postDate,
+        b.view_count AS viewCount,
+        b.recommend_count AS recommendCount,
+        b.author_id AS authorId,
+        m.nickname
+    FROM board b
+    INNER JOIN members m ON b.author_id = m.mid
+    
+        <if test="searchType == 'title'">
+           WHERE b.title LIKE '%' || #{keyword} || '%'
+        </if>
+        <if test="searchType == 'content'">
+            WHERE b.content LIKE '%' || #{keyword} || '%'
+        </if>
+        <if test="searchType == 'titleAndContent'">
+            WHERE b.title LIKE '%' || #{keyword} || '%' OR b.content LIKE '%' || #{keyword} || '%'
+        </if>
+        <if test="searchType == 'nickname'">
+            WHERE m.nickname LIKE '%' || #{keyword} || '%'
+        </if>
+    
+    ORDER BY b.bid DESC
+    OFFSET #{displayPost} ROWS FETCH NEXT #{postNum} ROWS ONLY
+	</select>
+	
+	<!-- 게시물 총 갯수 + 검색 적용 -->
+	<select id="searchCount" parameterType="HashMap" resultType="int">
+		SELECT COUNT(b.bid) FROM board b
+		INNER JOIN members m ON b.author_id = m.mid
+    
+        <if test="searchType == 'title'">
+            WHERE b.title LIKE '%' || #{keyword} || '%'
+        </if>
+        <if test="searchType == 'content'">
+            WHERE b.content LIKE '%' || #{keyword} || '%'
+        </if>
+        <if test="searchType == 'titleAndContent'">
+            WHERE b.title LIKE '%' || #{keyword} || '%' OR b.content LIKE '%' || #{keyword} || '%'
+        </if>
+        <if test="searchType == 'nickname'">
+            WHERE m.nickname LIKE '%' || #{keyword} || '%'
+        </if>
+	</select>
 </mapper>

@@ -11,7 +11,7 @@
           <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/board/list">게시판 목록</a>
+          <a class="nav-link" href="/board/list/1">게시판 목록</a>
         </li>
       </ul>
     </div>

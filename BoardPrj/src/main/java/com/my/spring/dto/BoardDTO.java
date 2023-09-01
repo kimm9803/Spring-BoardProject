@@ -26,7 +26,14 @@ public class BoardDTO {
 	private int viewCount;
 	private int recommendCount;
 	private String nickname;	// members 테이블에서 가져옴
+	private MemberType memberType;	// members 테이블에서 가져옴	
 	
+	public MemberType getMemberType() {
+		return memberType;
+	}
+	public void setMemberType(MemberType memberType) {
+		this.memberType = memberType;
+	}
 	public int getBid() {
 		return bid;
 	}

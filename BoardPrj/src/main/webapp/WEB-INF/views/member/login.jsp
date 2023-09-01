@@ -26,7 +26,7 @@
 </head>
 <body>
 <div class="login-form">
-  <h1 class="text-center mb-4"><a href="/" class="text-decoration-none text-dark">Mini Board</a></h2>
+  <h2 class="text-center mb-4"><a href="/" class="text-decoration-none text-dark">Mini Board</a></h2>
   <form action="/member/login" method="post">
     <div class="mb-3">
       <label for="memberId" class="form-label">아이디</label>

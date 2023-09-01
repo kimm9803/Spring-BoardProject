@@ -15,7 +15,10 @@
 <title>게시판 목록</title>
 <style>
     /* Set a fixed height for the table container */
-
+    .table-container {
+        max-height: 80vh; /* You can adjust this value */
+        overflow-y: auto;
+    }
     .pagination-container {
         display: flex;
         justify-content: center;
@@ -38,12 +41,12 @@
                 <div class="container-fluid d-flex justify-content-end">
                     <form class="form-inline">
                     	<select class="form-select text-center mr-2" aria-label="Default select example" name="searchType">
-							  <option value="title" <c:if test="${searchType eq 'title'}">selected</c:if>>제목</option>
-							  <option value="content" <c:if test="${searchType eq 'content'}">selected</c:if>>내용</option>
-							  <option value="titleAndContent" <c:if test="${searchType eq 'titleAndContent'}">selected</c:if>>제목+내용</option>
-							  <option value="nickname" <c:if test="${searchType eq 'nickname'}">selected</c:if>>작성자</option>
+							  <option value="title">제목</option>
+							  <option value="content">내용</option>
+							  <option value="titleAndContent">제목+내용</option>
+							  <option value="nickname">작성자</option>
 						</select>
-                        <input class="form-control mr-2" type="search" name="keyword" value="${keyword}" placeholder="통합 검색 창" aria-label="Search" autocomplete="off">
+                        <input class="form-control mr-2" type="search" name="keyword" placeholder="통합 검색 창" aria-label="Search" autocomplete="off">
                         <button class="btn btn-outline-success" type="submit">검색</button>
                     </form>
                 </div>
@@ -76,25 +79,23 @@
 			<div class="pagination-container">
                 <!-- 바뀐 부분: 페이징 번호 중앙 정렬 -->
                 <div style="flex-grow: 1; text-align: center; font-size: 15	px;">
-                    <c:if test="${page.prev}">
+                    <c:if test="${prev}">
                         <span class="mr-3">
-                            <a href="/board/list/${page.startPageNum-1}${page.searchTypeKeyword}">[이전]</a>
+                            <a href="/board/listSearch/${startPageNum-1}">[이전]</a>
                         </span>
                     </c:if>
-                    <c:forEach begin="${page.startPageNum}" end="${page.endPageNum}" var="num">
-                    	<span class="mr-3">
-                        	<c:if test="${select != num}"><a href="/board/list/${num}${page.searchTypeKeyword}">${num}</a></c:if>
-                        	<c:if test="${select == num}"><b>${num}</b></c:if>
-                        </span>
-                        
-                    </c:forEach>
-                    <c:if test="${page.next}">
+                    <c:forEach begin="${startPageNum}" end="${endPageNum}" var="num">
                         <span class="mr-3">
-                            <a href="/board/list/${page.endPageNum+1}${page.searchTypeKeyword}">[다음]</a>
+                            <a href="/board/listSearch/${num}">${num}</a>
+                        </span>
+                    </c:forEach>
+                    <c:if test="${next}">
+                        <span class="mr-3">
+                            <a href="/board/listSearch/${endPageNum+1}">[다음]</a>
                         </span>
                     </c:if>
                 </div>
-                
+                <!-- 바뀐 부분: 작성 버튼 오른쪽 정렬 -->
                 <div class="write-button">
                     <button type="button" class="btn btn-primary" id="writeButton">글작성</button>
                 </div>
