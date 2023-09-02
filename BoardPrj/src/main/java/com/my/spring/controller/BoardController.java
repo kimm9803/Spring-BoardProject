@@ -11,11 +11,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
 import com.my.spring.dto.BoardDTO;
 import com.my.spring.dto.MemberDTO;
 import com.my.spring.dto.Page;
 import com.my.spring.service.BoardService;
+import com.my.spring.service.LikeService;
 import com.my.spring.service.MemberService;
 
 @Controller
@@ -27,6 +29,9 @@ public class BoardController {
 
 	@Autowired
 	MemberService memberService;
+	
+	@Autowired
+	LikeService likeService;
 
 	// 게시물 조회(페이징 + 검색)
 	@RequestMapping(value = "/list/{num}", method = RequestMethod.GET)
@@ -83,9 +88,19 @@ public class BoardController {
 
 	// 게시판 상세조회
 	@RequestMapping(value = "/view/{num}", method = RequestMethod.GET)
-	public String getView(@PathVariable("num") int num, Model model) {
+	public String getView(@PathVariable("num") int num, Model model, HttpSession session) {
 		// 조회수 증가 후 상세조회
 		boardService.views(num);
+		String loginId = (String)session.getAttribute("memberId");
+		MemberDTO findMember = memberService.searchMember(loginId);
+		
+		int check = -1;
+		// 로그인 체크
+		if (findMember != null) {
+			// 0 or 1 반환
+			check = likeService.checkLike(findMember.getMid(), num);
+		}
+		
 		BoardDTO findDTO = boardService.view(num);
 		model.addAttribute("board", findDTO);
 
