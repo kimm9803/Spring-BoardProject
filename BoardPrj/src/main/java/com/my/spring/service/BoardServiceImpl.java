@@ -13,6 +13,9 @@ public class BoardServiceImpl implements BoardService {
 
 	@Autowired
 	BoardDAO boardDAO;
+	
+	@Autowired
+	LikeService likeService;
 
 	// 모든 게시판 조회
 	@Override

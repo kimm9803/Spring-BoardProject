@@ -8,12 +8,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.my.spring.dto.BoardDTO;
+import com.my.spring.dto.LikesDTO;
 import com.my.spring.dto.MemberDTO;
 import com.my.spring.dto.Page;
 import com.my.spring.service.BoardService;
@@ -46,7 +49,6 @@ public class BoardController {
 		
 		List<BoardDTO> boardList = boardService.listPage(page.getDisplayPost(), page.getPostNum(), searchType, keyword);
 		List<MemberDTO> memberList = memberService.memberList();
-
 		model.addAttribute("boardList", boardList);
 		model.addAttribute("memberList", memberList);
 		model.addAttribute("select", num);
@@ -86,21 +88,22 @@ public class BoardController {
 		return "redirect:/board/list";
 	}
 
-	// 게시판 상세조회
+	// 게시판 상세조회 + 추천&비추천 기능
 	@RequestMapping(value = "/view/{num}", method = RequestMethod.GET)
 	public String getView(@PathVariable("num") int num, Model model, HttpSession session) {
 		// 조회수 증가 후 상세조회
 		boardService.views(num);
+		int likeCount = likeService.likeCount(num);
 		String loginId = (String)session.getAttribute("memberId");
-		MemberDTO findMember = memberService.searchMember(loginId);
-		
 		int check = -1;
-		// 로그인 체크
-		if (findMember != null) {
+		if (loginId != null) {
+			MemberDTO findMember = memberService.searchMember(loginId);
 			// 0 or 1 반환
 			check = likeService.checkLike(findMember.getMid(), num);
+			model.addAttribute("mid", findMember.getMid());
 		}
-		
+		model.addAttribute("check", check);
+		model.addAttribute("likeCount", likeCount);
 		BoardDTO findDTO = boardService.view(num);
 		model.addAttribute("board", findDTO);
 
@@ -134,6 +137,20 @@ public class BoardController {
 
 	/*
 	 * 할 것
-	 * 특정 url로 들어갔을 때 수정, 삭제 못하게 예외처리 / 추천기능 / 댓글기능 + 댓글 추천기능
+	 * 특정 url로 들어갔을 때 수정, 삭제 못하게 예외처리 / 비추천기능 / 댓글기능 + 댓글 추천기능
+	 * 상세조회에서 목록으로 버튼 눌렀을 때 에러처리
+	 * 피드백 받은 거 리팩토링
 	 */
+	
+	@ResponseBody
+	@RequestMapping(value = "/like-up", method = RequestMethod.POST, consumes = "application/json")
+	public void likeUp(@RequestBody LikesDTO dto) {
+		 likeService.likeInsert(dto.getMemberId(), dto.getBoardId());
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/like-cancel", method = RequestMethod.POST, consumes = "application/json")
+	public void likeCancel(@RequestBody LikesDTO dto) {
+		likeService.likeCancel(dto.getMemberId(), dto.getBoardId());
+	}
 }

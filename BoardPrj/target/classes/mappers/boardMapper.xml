@@ -63,7 +63,7 @@
         b.content,
         b.post_date AS postDate,
         b.view_count AS viewCount,
-        b.recommend_count AS recommendCount,
+        (SELECT COUNT(like_id) FROM likes l WHERE l.board_id = b.bid) AS recommendCount,
         b.author_id AS authorId,
         m.nickname
     FROM board b

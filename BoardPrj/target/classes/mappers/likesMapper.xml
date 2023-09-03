@@ -3,10 +3,29 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.my.spring.mappers.likesMapper">
-	<!-- 좋아요 확인 -->
+	<!-- 추천 체크 여부 -->
 	<select id="checkLike" parameterType="HashMap" resultType="int">
 		SELECT COUNT(*)
 		FROM likes
-		WHERE member_id = ${memberId} AND board_id = ${boardId} 
+		WHERE member_id = #{memberId} AND board_id = #{boardId} 
+	</select>
+	
+	<!-- 추천 업 기능 -->
+	<insert id="likeInsert" parameterType="HashMap">
+		INSERT INTO likes (member_id, board_id)
+		VALUES (#{memberId}, #{boardId})
+	</insert>
+	
+	<!-- 추천 취소 기능 -->
+	<delete id="likeCancel" parameterType="HashMap">
+		DELETE FROM likes
+		WHERE member_id = #{memberId} AND board_id = #{boardId}
+	</delete>
+	
+	<!-- 추천 개수 -->
+	<select id="likeCount" parameterType="int" resultType="int">
+		SELECT COUNT(like_id)
+		FROM likes
+		WHERE board_id = #{boardId}
 	</select>
 </mapper>

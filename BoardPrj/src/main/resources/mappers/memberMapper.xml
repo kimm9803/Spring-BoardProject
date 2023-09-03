@@ -45,7 +45,7 @@
 	
 	<!-- 회원검색 -->
 	<select id="searchMember" parameterType="String" resultType="com.my.spring.dto.MemberDTO">
-		SELECT memberId, password, nickname, member_type AS memberType, mileage
+		SELECT mid, memberId, password, nickname, member_type AS memberType, mileage
 		FROM members
 		WHERE memberId = #{memberId}
 	</select>

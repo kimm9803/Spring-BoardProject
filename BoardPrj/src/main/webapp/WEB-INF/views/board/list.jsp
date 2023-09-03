@@ -86,7 +86,6 @@
                         	<c:if test="${select != num}"><a href="/board/list/${num}${page.searchTypeKeyword}">${num}</a></c:if>
                         	<c:if test="${select == num}"><b>${num}</b></c:if>
                         </span>
-                        
                     </c:forEach>
                     <c:if test="${page.next}">
                         <span class="mr-3">
@@ -94,15 +93,12 @@
                         </span>
                     </c:if>
                 </div>
-                
                 <div class="write-button">
                     <button type="button" class="btn btn-primary" id="writeButton">글작성</button>
                 </div>
             </div>
-            
 		</div>
 	</div>
-	
 
 	<script>
 		// 로그인 상태이면 작성 페이지로 이동, 아니면 로그인 페이지로 이동

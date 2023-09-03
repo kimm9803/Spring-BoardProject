@@ -68,6 +68,7 @@ public class BoardDTO {
 		return recommendCount;
 	}
 	public void setRecommendCount(int recommendCount) {
+		
 		this.recommendCount = recommendCount;
 	}
 	public String getNickname() {
