@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,10 +15,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.my.spring.dto.BoardDTO;
+import com.my.spring.dto.DislikesDTO;
 import com.my.spring.dto.LikesDTO;
 import com.my.spring.dto.MemberDTO;
 import com.my.spring.dto.Page;
 import com.my.spring.service.BoardService;
+import com.my.spring.service.DislikeService;
 import com.my.spring.service.LikeService;
 import com.my.spring.service.MemberService;
 
@@ -35,6 +36,9 @@ public class BoardController {
 	
 	@Autowired
 	LikeService likeService;
+	
+	@Autowired
+	DislikeService dislikeService;
 
 	// 게시물 조회(페이징 + 검색)
 	@RequestMapping(value = "/list/{num}", method = RequestMethod.GET)
@@ -94,16 +98,23 @@ public class BoardController {
 		// 조회수 증가 후 상세조회
 		boardService.views(num);
 		int likeCount = likeService.likeCount(num);
+		int dislikeCount = dislikeService.dislikeCount(num);
 		String loginId = (String)session.getAttribute("memberId");
-		int check = -1;
+		int likeCheck = -1;
+		int dislikeCheck = -1;
 		if (loginId != null) {
 			MemberDTO findMember = memberService.searchMember(loginId);
 			// 0 or 1 반환
-			check = likeService.checkLike(findMember.getMid(), num);
+			likeCheck = likeService.checkLike(findMember.getMid(), num);
+			dislikeCheck = dislikeService.checkDislike(findMember.getMid(), num);
 			model.addAttribute("mid", findMember.getMid());
+		} else {
+			model.addAttribute("mid", 0);
 		}
-		model.addAttribute("check", check);
+		model.addAttribute("likeCheck", likeCheck);
+		model.addAttribute("dislikeCheck", dislikeCheck);
 		model.addAttribute("likeCount", likeCount);
+		model.addAttribute("dislikeCount", dislikeCount);
 		BoardDTO findDTO = boardService.view(num);
 		model.addAttribute("board", findDTO);
 
@@ -137,8 +148,10 @@ public class BoardController {
 
 	/*
 	 * 할 것
-	 * 특정 url로 들어갔을 때 수정, 삭제 못하게 예외처리 / 비추천기능 / 댓글기능 + 댓글 추천기능
+	 * 특정 url로 들어갔을 때 수정, 삭제 못하게 예외처리 / 댓글기능 + 댓글 추천기능
 	 * 상세조회에서 목록으로 버튼 눌렀을 때 에러처리
+	 * 공지, 일반글 나누기
+	 * 개념글
 	 * 피드백 받은 거 리팩토링
 	 */
 	
@@ -152,5 +165,17 @@ public class BoardController {
 	@RequestMapping(value = "/like-cancel", method = RequestMethod.POST, consumes = "application/json")
 	public void likeCancel(@RequestBody LikesDTO dto) {
 		likeService.likeCancel(dto.getMemberId(), dto.getBoardId());
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/dislike-up", method = RequestMethod.POST, consumes = "application/json")
+	public void dislikeUp(@RequestBody DislikesDTO dto) {
+		 dislikeService.dislikeInsert(dto.getMemberId(), dto.getBoardId());
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/dislike-cancel", method = RequestMethod.POST, consumes = "application/json")
+	public void dislikeCancel(@RequestBody DislikesDTO dto) {
+		dislikeService.dislikeCancel(dto.getMemberId(), dto.getBoardId());
 	}
 }

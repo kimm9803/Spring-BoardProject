@@ -31,7 +31,7 @@
 				<div style="font-size: 13px;">
 					${board.nickname}&nbsp;&nbsp;|&nbsp;&nbsp;${board.postDate}</div>
 				<div style="font-size: 13px;">
-					조회&nbsp;${board.viewCount}&nbsp;&nbsp;|&nbsp;&nbsp;추천&nbsp;${likeCount}
+					조회&nbsp;${board.viewCount}&nbsp;&nbsp;|&nbsp;&nbsp;추천&nbsp;${likeCount}&nbsp;&nbsp;|&nbsp;&nbsp;비추천&nbsp;${dislikeCount}
 				</div>
 			</div>
 			<hr />
@@ -71,7 +71,7 @@
 		var memberType = "${board.memberType}";
 		var nickname = "${sessionScope.nickname}";
 		
-		if (${check} == 1) {
+		if (${likeCheck} == 1 && ${dislikeCheck} == 0) {
 			document.getElementById('recommendBtn').addEventListener('click', function() {
 				// 추천 취소 기능
 				$.ajax({
@@ -90,7 +90,10 @@
 					}
 				})
 			});
-		} else if (${check} == 0) {
+			document.getElementById('deprecatedBtn').addEventListener('click', function() {
+				alert('이미 추천을 눌렀습니다!')
+			});
+		} else if (${likeCheck} == 0 && ${dislikeCheck} == 0) {
 			document.getElementById('recommendBtn').addEventListener('click', function() {
 				// 추천 증가 기능
 				$.ajax({
@@ -107,15 +110,54 @@
 					}
 				})
 			});
+			document.getElementById('deprecatedBtn').addEventListener('click', function() {
+				// 비추천 증가 기능
+				$.ajax({
+					type : 'POST',
+					url : '/board/dislike-up',
+					contentType : 'application/json;charset=utf-8',
+					data : JSON.stringify({
+						"boardId" : ${board.bid},
+						"memberId" : ${mid}
+					}),
+					success : function(data) {
+						alert('비추천을 눌렀습니다!');
+						window.location.href = '/board/view/${board.bid}';
+					}
+				})
+			});
+		} else if (${likeCheck} == 0 && ${dislikeCheck} == 1) {
+			document.getElementById('recommendBtn').addEventListener('click', function() {
+				alert('이미 비추천을 눌렀습니다!')
+			});
+			document.getElementById('deprecatedBtn').addEventListener('click', function() {
+				// 비추천 취소 기능
+				$.ajax({
+					type : 'POST',
+					url : '/board/dislike-cancel',
+					contentType : 'application/json; charset=utf-8',
+					data : JSON.stringify(
+							{
+								"boardId" : ${board.bid},
+								"memberId" : ${mid}
+							}
+					),
+					success : function(data) {
+						alert('비추천을 취소하였습니다!');
+						window.location.href = '/board/view/${board.bid}';
+					}
+				})
+			});
 		} else {
 			document.getElementById('recommendBtn').addEventListener('click', function() {
 				alert('로그인을 먼저 해주세요!');
 			});
+			document.getElementById('deprecatedBtn').addEventListener('click', function() {
+				alert('로그인을 먼저 해주세요!');
+			});
 		}
 		
-		document.getElementById('deprecatedBtn').addEventListener('click', function() {
-			alert('비추천하였습니다!')
-		});
+		
 		if (memberType == 'ADMIN') {
 			document.getElementById('type').innerHTML = '[공지]';
 		} else {

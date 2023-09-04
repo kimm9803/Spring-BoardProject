@@ -10,9 +10,22 @@
 		WHERE member_id = #{memberId} AND board_id = #{boardId} 
 	</select>
 	
+	<!-- 비추천 체크 여부 -->
+	<select id="checkDislike" parameterType="HashMap" resultType="int">
+		SELECT COUNT(*)
+		FROM dislikes
+		WHERE member_id = #{memberId} AND board_id = #{boardId} 
+	</select>
+	
 	<!-- 추천 업 기능 -->
 	<insert id="likeInsert" parameterType="HashMap">
 		INSERT INTO likes (member_id, board_id)
+		VALUES (#{memberId}, #{boardId})
+	</insert>
+	
+	<!-- 비추천 업 기능 -->
+	<insert id="dislikeInsert" parameterType="HashMap">
+		INSERT INTO dislikes (member_id, board_id)
 		VALUES (#{memberId}, #{boardId})
 	</insert>
 	
@@ -22,10 +35,23 @@
 		WHERE member_id = #{memberId} AND board_id = #{boardId}
 	</delete>
 	
+	<!-- 비추천 취소 기능 -->
+	<delete id="dislikeCancel" parameterType="HashMap">
+		DELETE FROM dislikes
+		WHERE member_id = #{memberId} AND board_id = #{boardId}
+	</delete>
+	
 	<!-- 추천 개수 -->
 	<select id="likeCount" parameterType="int" resultType="int">
 		SELECT COUNT(like_id)
 		FROM likes
+		WHERE board_id = #{boardId}
+	</select>
+	
+	<!-- 비추천 개수 -->
+	<select id="dislikeCount" parameterType="int" resultType="int">
+		SELECT COUNT(dislike_id)
+		FROM dislikes
 		WHERE board_id = #{boardId}
 	</select>
 </mapper>
