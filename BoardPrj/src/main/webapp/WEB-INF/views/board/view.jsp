@@ -64,6 +64,20 @@
 						onclick="location.href='/board/delete/${board.bid}'">삭제</button>
 				</div>
 			</div>
+			<br> <br>
+			<form action="/comment/register/${board.bid}" method="post" onsubmit="return submitForm();">
+				<div class="mb-3">
+					<div class="d-flex">
+						<textarea class="form-control flex-grow-1"
+							id="exampleFormControlTextarea1" name="content" rows="3"
+							placeholder="로그인을 하셔야 댓글 작성이 가능합니다."></textarea>
+					</div>
+					<div class="d-flex justify-content-end">
+						<button type="submit" class="btn btn-primary"
+							id="commentRegisterBtn" style="margin-top: 10px;">등록</button>
+					</div>
+				</div>
+			</form>
 		</div>
 	</div>
 
@@ -168,9 +182,23 @@
 			document.getElementById('deleteButton').style.display = 'none';
 			document.getElementById('modifyButton').style.display = 'none';
 		}
+		
+		function submitForm() {
+	        // 세션 아이디를 확인
+	        var sessionId = "${sessionScope.memberId}";
+	        
+	        if (sessionId) {
+	            // 세션 아이디가 있을 경우 폼 제출
+	            return true;
+	        } else {
+	            // 세션 아이디가 없을 경우 알림 표시 후 폼 제출 취소
+	            alert('로그인을 먼저 해주세요!');
+	            return false;
+	        }
+	    }
 	</script>
 
-	
+
 	<script
 		src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
 		integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
