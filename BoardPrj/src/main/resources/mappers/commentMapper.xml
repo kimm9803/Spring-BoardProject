@@ -9,4 +9,27 @@
 		INSERT INTO comments (content, author_id, board_id)
 		VALUES (#{content}, #{authorId}, #{boardId})
 	</insert>
+	
+	<!-- 댓글 리스트 -->
+	<select id="commentList" parameterType="int" resultType="com.my.spring.dto.CommentsDTO">
+		SELECT c.comment_id AS commentId, c.content, c.comment_date AS commentDate,
+		c.author_id AS authorId, c.board_id AS boardId, m.nickname AS nickname
+		FROM comments c
+		INNER JOIN members m ON c.author_id = m.mid
+		WHERE c.board_id = #{bid}
+		ORDER BY c.comment_id DESC
+	</select>
+	
+	<!-- 댓글 수정 -->
+	<update id="updateComment" parameterType="com.my.spring.dto.CommentsDTO">
+		UPDATE comments
+		SET content = ${content}
+		WHERE comment_id = ${commentId} AND author_id = ${authorId} AND board_id = ${boardId}
+	</update>
+	
+	<!-- 댓글 삭제 -->
+	<delete id="deleteComment" parameterType="com.my.spring.dto.CommentsDTO">
+		DELETE FROM comments
+		WHERE comment_id = ${commentId} AND author_id = ${authorId} AND board_id = ${boardId}
+	</delete>
 </mapper>

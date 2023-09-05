@@ -16,10 +16,11 @@
 <title>게시물 상세조회</title>
 </head>
 <body>
-	<%@ include file="/WEB-INF/views/member/header.jsp"%>
+	<header><%@ include file="/WEB-INF/views/member/header.jsp"%></header>
+	
 
 	<div class="d-flex justify-content-center align-items-center"
-		style="height: 100vh;">
+		style="margin-top: 120px; position: relative;">
 		<div class="col-md-7">
 			<div class="mb-3 d-flex align-items-center">
 				<span id="type" style="margin-right: 20px; font-size: 18px;"></span>
@@ -43,7 +44,7 @@
 			</div>
 			<div class="d-flex justify-content-between">
 				<button type="button" class="btn btn-secondary"
-					onclick="location.href='/board/list'">목록으로</button>
+					onclick="history.back()">목록으로</button>
 				<div class="img" style="display: flex;">
 					<button type="button" id="recommendBtn"
 						style="border: none; background: none; cursor: pointer; margin-right: 10px;">
@@ -64,22 +65,34 @@
 						onclick="location.href='/board/delete/${board.bid}'">삭제</button>
 				</div>
 			</div>
-			<br> <br>
-			<form action="/comment/register/${board.bid}" method="post" onsubmit="return submitForm();">
-				<div class="mb-3">
-					<div class="d-flex">
-						<textarea class="form-control flex-grow-1"
-							id="exampleFormControlTextarea1" name="content" rows="3"
-							placeholder="로그인을 하셔야 댓글 작성이 가능합니다."></textarea>
-					</div>
-					<div class="d-flex justify-content-end">
-						<button type="submit" class="btn btn-primary"
-							id="commentRegisterBtn" style="margin-top: 10px;">등록</button>
-					</div>
-				</div>
-			</form>
 		</div>
 	</div>
+	<br>
+	
+	<div class="container"> <!-- 부트스트랩 컨테이너 -->
+    <div class="row justify-content-center align-items-center">
+        <div class="col-md-10">
+            <hr style="border: solid 1.5px gray;">
+            <form action="/comment/register/${board.bid}" method="post" onsubmit="return submitForm();">
+                <div class="mb-3">
+                    <div class="d-flex">
+                        <textarea class="form-control flex-grow-1" id="exampleFormControlTextarea1" name="content" rows="3" placeholder="로그인을 하셔야 댓글 작성이 가능합니다."></textarea>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <button type="submit" class="btn btn-primary" id="commentRegisterBtn" style="margin-top: 10px;">등록</button>
+                    </div>
+                </div>
+            </form>
+            <c:forEach items="${commentList}" var="comment">
+            	<div>${comment.nickname}&nbsp;&nbsp;|&nbsp;&nbsp;${comment.commentDate}</div><hr>
+            	<textarea readonly class="form-control"
+					id="commentTextarea1" rows="3">${comment.content}</textarea>
+            	<br>
+            	<hr>
+            </c:forEach>
+        </div>
+    </div>
+</div>
 
 	<script>
 		var memberType = "${board.memberType}";

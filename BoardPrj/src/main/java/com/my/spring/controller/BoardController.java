@@ -15,11 +15,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.my.spring.dto.BoardDTO;
+import com.my.spring.dto.CommentsDTO;
 import com.my.spring.dto.DislikesDTO;
 import com.my.spring.dto.LikesDTO;
 import com.my.spring.dto.MemberDTO;
 import com.my.spring.dto.Page;
 import com.my.spring.service.BoardService;
+import com.my.spring.service.CommentService;
 import com.my.spring.service.DislikeService;
 import com.my.spring.service.LikeService;
 import com.my.spring.service.MemberService;
@@ -39,6 +41,9 @@ public class BoardController {
 	
 	@Autowired
 	DislikeService dislikeService;
+	
+	@Autowired
+	CommentService commentService;
 
 	// 게시물 조회(페이징 + 검색)
 	@RequestMapping(value = "/list/{num}", method = RequestMethod.GET)
@@ -92,11 +97,14 @@ public class BoardController {
 		return "redirect:/board/list";
 	}
 
-	// 게시판 상세조회 + 추천&비추천 기능
+	// 게시판 상세조회 + 추천&비추천 기능 + 댓글 리스트
 	@RequestMapping(value = "/view/{num}", method = RequestMethod.GET)
 	public String getView(@PathVariable("num") int num, Model model, HttpSession session) {
 		// 조회수 증가 후 상세조회
 		boardService.views(num);
+		// 댓글 리스트
+		List<CommentsDTO> commentList = commentService.commentList(num);
+		
 		int likeCount = likeService.likeCount(num);
 		int dislikeCount = dislikeService.dislikeCount(num);
 		String loginId = (String)session.getAttribute("memberId");
@@ -111,12 +119,14 @@ public class BoardController {
 		} else {
 			model.addAttribute("mid", 0);
 		}
+		model.addAttribute("commentList", commentList);
 		model.addAttribute("likeCheck", likeCheck);
 		model.addAttribute("dislikeCheck", dislikeCheck);
 		model.addAttribute("likeCount", likeCount);
 		model.addAttribute("dislikeCount", dislikeCount);
 		BoardDTO findDTO = boardService.view(num);
 		model.addAttribute("board", findDTO);
+		
 
 		return "board/view";
 	}
@@ -149,7 +159,6 @@ public class BoardController {
 	/*
 	 * 할 것
 	 * 특정 url로 들어갔을 때 수정, 삭제 못하게 예외처리 / 댓글기능 + 댓글 추천기능
-	 * 상세조회에서 목록으로 버튼 눌렀을 때 에러처리
 	 * 공지, 일반글 나누기
 	 * 개념글
 	 * 피드백 받은 거 리팩토링

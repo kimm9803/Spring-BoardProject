@@ -20,7 +20,14 @@ public class CommentsDTO {
 	private Date commentDate;
 	private int authorId;
 	private int boardId;
+	private String nickname;
 	
+	public String getNickname() {
+		return nickname;
+	}
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
 	public int getCommentId() {
 		return commentId;
 	}

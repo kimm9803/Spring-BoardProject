@@ -36,4 +36,17 @@ public class CommentController {
 		
 		return "redirect:/board/view/{num}";
 	}
+	
+	/*
+	// 댓글 수정
+	@PostMapping("/update/{num}")
+	public String updateComment(@PathVariable("num") int num) {
+		
+	}
+	
+	// 댓글 삭제
+	@PostMapping("/delete/{num}")
+	
+	수정 삭제 컨트롤러 만들고 댓글수정.jsp, 본인이 쓴 댓글만 수정, 삭제 버튼 보이기
+	*/
 }
